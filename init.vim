@@ -270,8 +270,6 @@ set list listchars=nbsp:¬,tab:··,trail:¤,extends:▷,precedes:◁
 " Cursor {{{2
 " SHOW CURRENT LINE :
 set cursorline
-"SHOW CURRENT COLUMN :
-set cursorcolumn
 " SHOW CURSOR
 highlight Cursor  guifg=white guibg=black
 highlight iCursor guifg=white guibg=steelblue
@@ -395,14 +393,37 @@ no <right>  :tabnext<CR>
 nmap <Space> <Nop>
 let mapleader = "\<Space>"
 
-" Vim Easy Motion {{{2
-let g:EasyMotion_leader_key = '\'
-
 " SpeedDating {{{2
 " Reselect after increment decrement
 map <C-A> <Plug>SpeedDatingUpgv
+
 map <C-X> <Plug>SpeedDatingDowngv
+
+" Movement in insert mode
+inoremap <C-h> <C-o>h
+inoremap <C-l> <C-o>a
+inoremap <C-j> <C-o>j
+inoremap <C-k> <C-o>k
+
+" Make Y behave like other capitals
+nnoremap Y y$
+
+" QuickFix
+nnoremap ]q :cnext<cr>zz
+nnoremap [q :cprev<cr>zz
+nnoremap ]l :lnext<cr>zz
+nnoremap [l :lprev<cr>zz
+
+" Buffers
+nnoremap ]b :bnext<cr>
+nnoremap [b :bprev<cr>
+
+" <tab> / <s-tab> | Circular windows navigation
+nnoremap <tab>   <c-w>w
+nnoremap <S-tab> <c-w>W
 
 " Binding leaders {{{2
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 noremap <silent> ZZ :call AutocloseSession()<CR>
+
+" vim: set foldmethod=marker :
