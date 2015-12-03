@@ -31,7 +31,6 @@ Plug 'joequery/Stupid-EasyMotion'
 Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
 Plug 'vim-scripts/restore_view.vim'
 " search / finder
-Plug 'dahu/SearchParty'
 Plug 'junegunn/fzf',        { 'do': 'yes \| ./install' }
 Plug 'junegunn/fzf.vim'
 " code
@@ -53,6 +52,66 @@ call plug#end()
 filetype plugin indent on
 
 " Tweaking Plugins {{{1
+" FZF {{{2
+if has('nvim')
+  let $FZF_DEFAULT_OPTS .= ' --inline-info'
+endif
+
+nnoremap <silent> <Leader><Leader> :Files<CR>
+
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+" Goyo {{{2
+let g:goyo_width = '100%'
+let g:goyo_height = '100%'
+let g:goyo_linenr = '100'
+function! s:goyo_enter()
+  if has('gui_running')
+    set fullscreen
+    set background=light
+    set linespace=7
+  elseif exists('$TMUX')
+    silent !tmux set status off
+    set noshowmode
+    set noshowcmd
+    set nonumber
+    " Show number relative from the cursor
+    set norelativenumber
+    " Disable quickfixsign
+    :QuickfixsignsDisable
+    set scrolloff=999
+  endif
+endfunction
+
+function! s:goyo_leave()
+  if has('gui_running')
+    set nofullscreen
+    set background=dark
+    set linespace=0
+  elseif exists('$TMUX')
+    silent !tmux set status on
+    set showmode
+    set showcmd
+    set number
+    " Show number relative from the cursor
+    set relativenumber
+    :QuickfixsignsEnable
+    set scrolloff=5
+  endif
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
+nnoremap <Leader>G :Goyo<CR>
+
 " vim-session {{{2
 " Extended session management for Vim (:mksession on steroids)
 let g:session_autoload = 'yes'
