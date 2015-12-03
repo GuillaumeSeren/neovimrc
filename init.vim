@@ -160,6 +160,10 @@ set softtabstop=2
 set expandtab
 set shiftround
 
+" Completion {{{2
+" set complete=.,w,b,u,t
+set complete-=i
+
 " SPELL CHECKER {{{2
 " https://georgebrock.github.io/talks/vim-completion/
 " Autocomplete with dictionary words when spell check is on
