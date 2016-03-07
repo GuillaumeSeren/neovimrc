@@ -7,7 +7,7 @@
 " ---------------
 
 " Default plugin {{{1
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
@@ -31,7 +31,7 @@ Plug 'joequery/Stupid-EasyMotion'
 Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
 Plug 'vim-scripts/restore_view.vim'
 " search / finder
-Plug 'junegunn/fzf',        { 'do': 'yes \| ./install' }
+Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
 Plug 'junegunn/fzf.vim'
 " code
 Plug 'joonty/vdebug'
@@ -41,6 +41,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'rhysd/committia.vim'
 
 " Lazy plugins {{{1
+Plug 'guyzmo/notmuch-abook', { 'for': 'mail' }
 Plug 'honza/dockerfile.vim', { 'for': 'docker' }
 Plug 'leafo/moonscript-vim' , { 'for': 'moon' }
 Plug 'avakhov/vim-yaml', { 'for': ['python', 'yaml'] }
