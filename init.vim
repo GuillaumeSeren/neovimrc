@@ -31,7 +31,6 @@ Plug 'joequery/Stupid-EasyMotion'
 Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
 Plug 'vim-scripts/restore_view.vim'
 " search / finder
-Plug 'dahu/SearchParty'
 Plug 'junegunn/fzf',        { 'do': 'yes \| ./install' }
 Plug 'junegunn/fzf.vim'
 " code
@@ -53,6 +52,66 @@ call plug#end()
 filetype plugin indent on
 
 " Tweaking Plugins {{{1
+" FZF {{{2
+if has('nvim')
+  let $FZF_DEFAULT_OPTS .= ' --inline-info'
+endif
+
+nnoremap <silent> <Leader><Leader> :Files<CR>
+
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+" Goyo {{{2
+let g:goyo_width = '100%'
+let g:goyo_height = '100%'
+let g:goyo_linenr = '100'
+function! s:goyo_enter()
+  if has('gui_running')
+    set fullscreen
+    set background=light
+    set linespace=7
+  elseif exists('$TMUX')
+    silent !tmux set status off
+    set noshowmode
+    set noshowcmd
+    set nonumber
+    " Show number relative from the cursor
+    set norelativenumber
+    " Disable quickfixsign
+    :QuickfixsignsDisable
+    set scrolloff=999
+  endif
+endfunction
+
+function! s:goyo_leave()
+  if has('gui_running')
+    set nofullscreen
+    set background=dark
+    set linespace=0
+  elseif exists('$TMUX')
+    silent !tmux set status on
+    set showmode
+    set showcmd
+    set number
+    " Show number relative from the cursor
+    set relativenumber
+    :QuickfixsignsEnable
+    set scrolloff=5
+  endif
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
+nnoremap <Leader>G :Goyo<CR>
+
 " vim-session {{{2
 " Extended session management for Vim (:mksession on steroids)
 let g:session_autoload = 'yes'
@@ -100,6 +159,10 @@ set tabstop=2
 set softtabstop=2
 set expandtab
 set shiftround
+
+" Completion {{{2
+" set complete=.,w,b,u,t
+set complete-=i
 
 " SPELL CHECKER {{{2
 " https://georgebrock.github.io/talks/vim-completion/
@@ -207,8 +270,6 @@ set list listchars=nbsp:¬,tab:··,trail:¤,extends:▷,precedes:◁
 " Cursor {{{2
 " SHOW CURRENT LINE :
 set cursorline
-"SHOW CURRENT COLUMN :
-set cursorcolumn
 " SHOW CURSOR
 highlight Cursor  guifg=white guibg=black
 highlight iCursor guifg=white guibg=steelblue
@@ -332,14 +393,37 @@ no <right>  :tabnext<CR>
 nmap <Space> <Nop>
 let mapleader = "\<Space>"
 
-" Vim Easy Motion {{{2
-let g:EasyMotion_leader_key = '\'
-
 " SpeedDating {{{2
 " Reselect after increment decrement
 map <C-A> <Plug>SpeedDatingUpgv
+
 map <C-X> <Plug>SpeedDatingDowngv
+
+" Movement in insert mode
+inoremap <C-h> <C-o>h
+inoremap <C-l> <C-o>a
+inoremap <C-j> <C-o>j
+inoremap <C-k> <C-o>k
+
+" Make Y behave like other capitals
+nnoremap Y y$
+
+" QuickFix
+nnoremap ]q :cnext<cr>zz
+nnoremap [q :cprev<cr>zz
+nnoremap ]l :lnext<cr>zz
+nnoremap [l :lprev<cr>zz
+
+" Buffers
+nnoremap ]b :bnext<cr>
+nnoremap [b :bprev<cr>
+
+" <tab> / <s-tab> | Circular windows navigation
+nnoremap <tab>   <c-w>w
+nnoremap <S-tab> <c-w>W
 
 " Binding leaders {{{2
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 noremap <silent> ZZ :call AutocloseSession()<CR>
+
+" vim: set foldmethod=marker :
