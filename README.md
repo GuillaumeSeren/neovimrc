@@ -14,14 +14,6 @@ As I use vim-plug to manage the plugins, there is two categories:
 * Defaults plugins (always loaded).
 * Specifics plugins (lazy loaded on some case).
 
-Dictionnaries
-=============
-Aside as the plugins the dictionnaries are not installed by vim-plug,
-vim might be able to get them for you, if not you will have to download
-them yourself and put them in '~/.vim/spell',
-you can find them, here (by default I use french & english):
-http://wordlist.aspell.net/
-
 Install
 =======
 ```
