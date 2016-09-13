@@ -426,6 +426,30 @@ function! AppendModeline()
   call append(line("$"), l:modeline)
 endfunction
 
+" Pulse on focus
+" from https://github.com/airblade/dotvim/blob/dd5d7737e39aad5e24c1a4a8c0d115ff2ae7b488/vimrc#L294-L310
+function! s:Pulse()
+  setlocal cursorline!
+  redraw
+  sleep 100m
+
+  setlocal cursorline!
+  redraw
+  sleep 100m
+
+  setlocal cursorline!
+  redraw
+  sleep 100m
+
+  setlocal cursorline!
+  redraw
+  sleep 100m
+
+  " setlocal nocursorline
+  " redraw
+endfunction
+autocmd FocusGained * call s:Pulse()
+
 " CLOSING {{{2
 " ZZ now saves all files, creates a session and exits
 function! AutocloseSession()
