@@ -23,6 +23,7 @@ Plug 'tpope/vim-rsi'
 " Display
 Plug 'gorodinskiy/vim-coloresque'
 Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/goyo.vim'
 Plug 'kien/rainbow_parentheses.vim'
@@ -246,9 +247,15 @@ set foldmethod=indent
 
 " colorscheme {{{2
 " set the background light or dark
-set background=dark
-let g:solarized_termtrans = 1
-colorscheme solarized
+set background=light
+" let g:solarized_termtrans = 1
+let g:gruvbox_box = 1
+let g:gruvbox_italic = 1
+let g:gruvbox_underline = 1
+let g:gruvbox_undercurl = 1
+let g:gruvbox_termcolors = 256 " 16 or 256
+" colorscheme solarized
+colorscheme gruvbox
 " Change le colorscheme en mode diff
 if &diff
     colorscheme solarized
