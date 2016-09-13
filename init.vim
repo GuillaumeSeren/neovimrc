@@ -543,5 +543,18 @@ nnoremap <S-tab> <c-w>W
 " Binding leaders {{{2
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 noremap <silent> ZZ :call AutocloseSession()<CR>
+" 'cd' towards the dir in which the current file is edited
+" but only change the path for the current window
+map <leader>cd :lcd %:h<CR>
+" Open files located in the same dir in with the current file is edited
+map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
+" Create file if it did not exist
+map <leader>gf :e <cfile><cr>
+
+" testing
+noremap <Space> <C-d>zz
+noremap <NUL> <C-u>zz  "// Ctrl + Space --> Ctrl + u + z + z
+
+vmap r "_dP
 
 " vim: set foldmethod=marker :
