@@ -133,6 +133,10 @@ command! -nargs=* Ag call fzf#run({
 \ 'down':    '50%'
 \ })
 
+" indentLine {{{2
+let g:indentLine_color_term = 239
+let g:indentLine_color_gui  = '#09AA08'
+let g:indentLine_char       = '│'
 " Goyo {{{2
 let g:goyo_width = '100%'
 let g:goyo_height = '100%'
