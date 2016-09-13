@@ -7,7 +7,7 @@
 " ---------------
 
 " Default plugin {{{1
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
@@ -15,32 +15,58 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-abolish'
+" wiki
 Plug 'vimwiki/vimwiki'
+" undotree
 Plug 'mbbill/undotree'
+" some i3 control
 Plug 'fabi1cazenave/suckless.vim'
+" Jump everywhere
+Plug 'easymotion/vim-easymotion'
+" testing vim-rsi
+Plug 'tpope/vim-rsi'
+" Re testing vim-ragtag
+Plug 'tpope/vim-ragtag'
+" testing neoman
+Plug 'nhooyr/neoman.vim'
 " Display
-Plug 'Yggdroot/indentLine'
 Plug 'gorodinskiy/vim-coloresque'
 Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/goyo.vim'
-Plug 'bling/vim-airline'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'junegunn/vim-peekaboo'
+# https://github.com/equalsraf/neovim-qt/issues/182
+Plug 'julioju/neovim-qt-colors-solarized-truecolor-only'
+" Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'tomtom/quickfixsigns_vim'
+Plug 'benekastah/neomake'
+" Plug 'AlessandroYorba/Alduin'
+Plug 'Yggdroot/indentLine'
 " Session
-Plug 'joequery/Stupid-EasyMotion'
 Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
 Plug 'vim-scripts/restore_view.vim'
 " search / finder
-Plug 'junegunn/fzf',        { 'do': 'yes \| ./install' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+" qlist
+Plug 'romainl/vim-qlist'
 " code
 Plug 'joonty/vdebug'
 " VCS
 Plug 'vcscommand.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'rhysd/committia.vim'
-
+" Twig plugin
+Plug 'evidens/vim-twig'
 " Lazy plugins {{{1
+Plug 'guyzmo/notmuch-abook', { 'for': ['mail'] }
+" testing 2016-04-24 wordy
+Plug 'reedes/vim-wordy', { 'for': ['mail', 'markdown', 'vimwiki'] }
 Plug 'honza/dockerfile.vim', { 'for': 'docker' }
 Plug 'leafo/moonscript-vim' , { 'for': 'moon' }
 Plug 'avakhov/vim-yaml', { 'for': ['python', 'yaml'] }
@@ -59,15 +85,60 @@ endif
 
 nnoremap <silent> <Leader><Leader> :Files<CR>
 
+" FZF selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+" Insert mode completion
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
+" Advanced customization using autoload functions
+inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
 
+function! s:ag_to_qf(line)
+  let parts = split(a:line, ':')
+  return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
+        \ 'text': join(parts[3:], ':')}
+endfunction
+
+function! s:ag_handler(lines)
+  if len(a:lines) < 2 | return | endif
+
+  let cmd = get({'ctrl-x': 'split',
+               \ 'ctrl-v': 'vertical split',
+               \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
+  let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
+
+  let first = list[0]
+  execute cmd escape(first.filename, ' %#\')
+  execute first.lnum
+  execute 'normal!' first.col.'|zz'
+
+  if len(list) > 1
+    call setqflist(list)
+    copen
+    wincmd p
+  endif
+endfunction
+
+command! -nargs=* Ag call fzf#run({
+\ 'source':  printf('ag --nogroup --column --color "%s"',
+\                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+\ 'sink*':    function('<sid>ag_handler'),
+\ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+\            '--multi --bind ctrl-a:select-all,ctrl-d:deselect-all '.
+\            '--color hl:68,hl+:110',
+\ 'down':    '50%'
+\ })
+
+" indentLine {{{2
+let g:indentLine_color_term = 239
+let g:indentLine_color_gui  = '#09AA08'
+let g:indentLine_char       = '│'
 " Goyo {{{2
 let g:goyo_width = '100%'
 let g:goyo_height = '100%'
@@ -145,6 +216,12 @@ let g:indentLine_char       = '│'
 " restore_view {{{2
 set viewoptions=cursor,folds,slash,unix
 
+" airline {{{2
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline_powerline_fonts = 1
+
 " Core configuration {{{1
 " grepprg {{{2
 " if available use ag
@@ -161,6 +238,8 @@ set expandtab
 set shiftround
 
 " Completion {{{2
+set omnifunc=syntaxcomplete#Complete
+
 " set complete=.,w,b,u,t
 set complete-=i
 
@@ -232,9 +311,15 @@ set foldmethod=indent
 
 " colorscheme {{{2
 " set the background light or dark
-set background=dark
-let g:solarized_termtrans = 1
-colorscheme solarized
+set background=light
+" let g:solarized_termtrans = 1
+let g:gruvbox_box = 1
+let g:gruvbox_italic = 1
+let g:gruvbox_underline = 1
+let g:gruvbox_undercurl = 1
+let g:gruvbox_termcolors = 256 " 16 or 256
+" colorscheme solarized
+colorscheme gruvbox
 " Change le colorscheme en mode diff
 if &diff
     colorscheme solarized
@@ -327,17 +412,45 @@ if has("autocmd")
                 \| exe "normal g'\"" | endif
 endif
 
+" Launch neomake on save {{{2
+if has("autocmd")
+  autocmd! BufWritePost * Neomake
+endif
 " Functions {{{1
 " AppendModeline() {{{2
 " Append modeline after last line in buffer.
 " Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
 " files.
 function! AppendModeline()
-  let l:modeline = printf(" vim: set ft=%s ts=%d sw=%d tw=%d %set :",
-        \ &filetype, &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+  let l:modeline = printf(" vim: set ft=%s ts=%d sw=%d tw=%d foldmethod=%s %set :",
+        \ &filetype, &tabstop, &shiftwidth, &textwidth, &foldmethod, &expandtab ? '' : 'no')
   let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
   call append(line("$"), l:modeline)
 endfunction
+
+" Pulse on focus
+" from https://github.com/airblade/dotvim/blob/dd5d7737e39aad5e24c1a4a8c0d115ff2ae7b488/vimrc#L294-L310
+function! s:Pulse()
+  setlocal cursorline!
+  redraw
+  sleep 100m
+
+  setlocal cursorline!
+  redraw
+  sleep 100m
+
+  setlocal cursorline!
+  redraw
+  sleep 100m
+
+  setlocal cursorline!
+  redraw
+  sleep 100m
+
+  " setlocal nocursorline
+  " redraw
+endfunction
+autocmd FocusGained * call s:Pulse()
 
 " CLOSING {{{2
 " ZZ now saves all files, creates a session and exits
@@ -366,7 +479,6 @@ nnoremap gdp dp]c
 vnoremap > >gv
 vnoremap < <gv
 
-" Arrow remapping {{{2
 " Disable Arrow in insert mode {{{3
 ino <down>  <Nop>
 ino <left>  <Nop>
@@ -399,6 +511,14 @@ map <C-A> <Plug>SpeedDatingUpgv
 
 map <C-X> <Plug>SpeedDatingDowngv
 
+" NeoMan {{{2
+" Overload K
+nnoremap <silent> K :Nman<CR>
+" Open vertical split man page with the word under the cursor.
+nnoremap <silent> <leader>mv :Vnman<CR>
+
+" nmap <silent> <BS> :nohlsearch<CR>
+
 " Movement in insert mode
 inoremap <C-h> <C-o>h
 inoremap <C-l> <C-o>a
@@ -425,5 +545,18 @@ nnoremap <S-tab> <c-w>W
 " Binding leaders {{{2
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 noremap <silent> ZZ :call AutocloseSession()<CR>
+" 'cd' towards the dir in which the current file is edited
+" but only change the path for the current window
+map <leader>cd :lcd %:h<CR>
+" Open files located in the same dir in with the current file is edited
+map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
+" Create file if it did not exist
+map <leader>gf :e <cfile><cr>
+
+" testing
+noremap <Space> <C-d>zz
+noremap <NUL> <C-u>zz  "// Ctrl + Space --> Ctrl + u + z + z
+
+vmap r "_dP
 
 " vim: set foldmethod=marker :
