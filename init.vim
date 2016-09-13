@@ -477,7 +477,6 @@ nnoremap gdp dp]c
 vnoremap > >gv
 vnoremap < <gv
 
-" Arrow remapping {{{2
 " Disable Arrow in insert mode {{{3
 ino <down>  <Nop>
 ino <left>  <Nop>
@@ -509,6 +508,12 @@ let mapleader = "\<Space>"
 map <C-A> <Plug>SpeedDatingUpgv
 
 map <C-X> <Plug>SpeedDatingDowngv
+
+" NeoMan {{{2
+" Overload K
+nnoremap <silent> K :Nman<CR>
+" Open vertical split man page with the word under the cursor.
+nnoremap <silent> <leader>mv :Vnman<CR>
 
 " nmap <silent> <BS> :nohlsearch<CR>
 
