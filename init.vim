@@ -38,6 +38,8 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/goyo.vim'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'junegunn/vim-peekaboo'
+# https://github.com/equalsraf/neovim-qt/issues/182
+Plug 'julioju/neovim-qt-colors-solarized-truecolor-only'
 " Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
