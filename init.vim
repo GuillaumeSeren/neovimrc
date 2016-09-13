@@ -47,7 +47,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'rhysd/committia.vim'
 
 " Lazy plugins {{{1
-Plug 'guyzmo/notmuch-abook', { 'for': 'mail' }
+Plug 'guyzmo/notmuch-abook', { 'for': ['mail'] }
+" testing 2016-04-24 wordy
+Plug 'reedes/vim-wordy', { 'for': ['mail', 'markdown', 'vimwiki'] }
 Plug 'honza/dockerfile.vim', { 'for': 'docker' }
 Plug 'leafo/moonscript-vim' , { 'for': 'moon' }
 Plug 'avakhov/vim-yaml', { 'for': ['python', 'yaml'] }
