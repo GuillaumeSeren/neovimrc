@@ -15,11 +15,21 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-abolish'
+" wiki
 Plug 'vimwiki/vimwiki'
+" undotree
 Plug 'mbbill/undotree'
+" some i3 control
 Plug 'fabi1cazenave/suckless.vim'
+" Jump everywhere
 Plug 'easymotion/vim-easymotion'
+" testing vim-rsi
 Plug 'tpope/vim-rsi'
+" Re testing vim-ragtag
+Plug 'tpope/vim-ragtag'
+" testing neoman
+Plug 'nhooyr/neoman.vim'
 " Display
 Plug 'gorodinskiy/vim-coloresque'
 Plug 'altercation/vim-colors-solarized'
@@ -28,24 +38,29 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/goyo.vim'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'junegunn/vim-peekaboo'
+" Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tomtom/quickfixsigns_vim'
 Plug 'benekastah/neomake'
 " Plug 'AlessandroYorba/Alduin'
+Plug 'Yggdroot/indentLine'
 " Session
 Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
 Plug 'vim-scripts/restore_view.vim'
 " search / finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+" qlist
+Plug 'romainl/vim-qlist'
 " code
 Plug 'joonty/vdebug'
 " VCS
 Plug 'vcscommand.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'rhysd/committia.vim'
-
+" Twig plugin
+Plug 'evidens/vim-twig'
 " Lazy plugins {{{1
 Plug 'guyzmo/notmuch-abook', { 'for': ['mail'] }
 " testing 2016-04-24 wordy
