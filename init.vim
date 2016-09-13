@@ -410,6 +410,10 @@ if has("autocmd")
                 \| exe "normal g'\"" | endif
 endif
 
+" Launch neomake on save {{{2
+if has("autocmd")
+  autocmd! BufWritePost * Neomake
+endif
 " Functions {{{1
 " AppendModeline() {{{2
 " Append modeline after last line in buffer.
