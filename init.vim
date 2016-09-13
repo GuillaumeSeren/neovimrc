@@ -173,6 +173,8 @@ set expandtab
 set shiftround
 
 " Completion {{{2
+set omnifunc=syntaxcomplete#Complete
+
 " set complete=.,w,b,u,t
 set complete-=i
 
@@ -410,6 +412,8 @@ let mapleader = "\<Space>"
 map <C-A> <Plug>SpeedDatingUpgv
 
 map <C-X> <Plug>SpeedDatingDowngv
+
+" nmap <silent> <BS> :nohlsearch<CR>
 
 " Movement in insert mode
 inoremap <C-h> <C-o>h
