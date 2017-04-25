@@ -38,20 +38,19 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/goyo.vim'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'junegunn/vim-peekaboo'
-# https://github.com/equalsraf/neovim-qt/issues/182
-Plug 'julioju/neovim-qt-colors-solarized-truecolor-only'
 " Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tomtom/quickfixsigns_vim'
 Plug 'benekastah/neomake'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Plug 'AlessandroYorba/Alduin'
 Plug 'Yggdroot/indentLine'
 " Session
 Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
 Plug 'vim-scripts/restore_view.vim'
 " search / finder
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
 Plug 'junegunn/fzf.vim'
 " qlist
 Plug 'romainl/vim-qlist'
@@ -74,6 +73,7 @@ Plug 'Matt-Deacalion/vim-systemd-syntax', { 'for': 'systemd' }
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 Plug 'othree/html5.vim', { 'for': ['html', 'xhtml'] }
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
+Plug 'vimperator/vimperator.vim', { 'for': 'vimperator' }
 call plug#end()
 filetype plugin indent on
 
@@ -85,7 +85,7 @@ endif
 
 nnoremap <silent> <Leader><Leader> :Files<CR>
 
-" FZF selecting mappings
+" Mapping selecting mappings
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
@@ -222,6 +222,35 @@ let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline_powerline_fonts = 1
 
+" NeoMake {{{2
+" let g:neomake_css_recess_maker = {
+"     \ 'args': ['--verbose'],
+"     \ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
+"     \ }
+" let g:neomake_css_enabled_makers = ['recess']
+
+" let g:neomake_css_recess_maker = {
+"     \ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
+"     \ }
+" let g:neomake_css_enabled_makers = ['recess']
+
+" deoplete {{{2
+" Use deoplete.
+	" Use deoplete.
+	let g:deoplete#enable_at_startup = 1
+	" Use smartcase.
+	let g:deoplete#enable_smart_case = 1
+
+	" <C-h>, <BS>: close popup and delete backword char.
+	inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
+	inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
+
+	" <CR>: close popup and save indent.
+	inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+	function! s:my_cr_function() abort
+	  return deoplete#close_popup() . "\<CR>"
+  endfunction
+
 " Core configuration {{{1
 " grepprg {{{2
 " if available use ag
@@ -308,6 +337,7 @@ augroup END
 
 " Folding {{{2
 set foldmethod=indent
+set foldlevelstart=1
 
 " colorscheme {{{2
 " set the background light or dark
@@ -493,8 +523,10 @@ vno <up>    <Nop>
 
 " Remap Arrow Up/Down to move line {{{3
 " Real Vimmer forget the cross
-no <down>   ddp
-no <up>     ddkP
+" no <down>   ddp
+" no <up>     ddkP
+vnoremap <down> :m '>+1<CR>gv=gv
+vnoremap <up>   :m '<-2<CR>gv=gv
 
 " Remap Arrow Right / Left to switch tab {{{3
 no <left>   :tabprevious<CR>
