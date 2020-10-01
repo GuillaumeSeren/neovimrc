@@ -6,74 +6,91 @@
 " @Link    : https://github.com/GuillaumeSeren/neovimrc
 " ---------------
 
-" Default plugin {{{1
+" Default plugins {{{1
 call plug#begin('~/.config/nvim/plugged')
+" DEFAULT preset
 Plug 'tpope/vim-sensible'
+" Extend . usage
 Plug 'tpope/vim-repeat'
+" Extend C^a / C^x
 Plug 'tpope/vim-speeddating'
+" Extend netrw
 Plug 'tpope/vim-vinegar'
+" Several UNIX alias (SudoWrite)
 Plug 'tpope/vim-eunuch'
+" Manage surround
 Plug 'tpope/vim-surround'
+" Enhance surround for many html / xml
+Plug 'tpope/vim-ragtag'
+" Easy comment gcc
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-abolish'
+" show a diff when recover a file
+Plug 'chrisbra/Recover.vim'
+" linter
+Plug 'w0rp/ale'
 " wiki
 Plug 'vimwiki/vimwiki'
-" undotree
+" zettelkasten
+Plug 'michal-h21/vim-zettel'
+" vim-pandoc
+Plug 'vim-pandoc/vim-pandoc'
+" vim-pandoc syntax
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
+" Access undotree of a file
 Plug 'mbbill/undotree'
 " some i3 control
 Plug 'fabi1cazenave/suckless.vim'
-" Jump everywhere
-Plug 'easymotion/vim-easymotion'
-" testing vim-rsi
+" Readline binding for insert and command mode
 Plug 'tpope/vim-rsi'
-" Re testing vim-ragtag
-Plug 'tpope/vim-ragtag'
-" testing neoman
-Plug 'nhooyr/neoman.vim'
-" Display
-Plug 'gorodinskiy/vim-coloresque'
-Plug 'altercation/vim-colors-solarized'
-Plug 'morhetz/gruvbox'
-Plug 'ryanoasis/vim-devicons'
-Plug 'junegunn/goyo.vim'
-Plug 'kien/rainbow_parentheses.vim'
-Plug 'junegunn/vim-peekaboo'
-" Plug 'bling/vim-airline'
+" Status line config
 Plug 'vim-airline/vim-airline'
+" Status line theme
 Plug 'vim-airline/vim-airline-themes'
-Plug 'tomtom/quickfixsigns_vim'
-Plug 'benekastah/neomake'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'AlessandroYorba/Alduin'
+" Git in vim
+Plug 'tpope/vim-fugitive'
+" Show diff when git commit
+Plug 'rhysd/committia.vim'
+" ansi escap sequence concealed
+" Plug 'powerman/vim-plugin-AnsiEsc'
+" vim-man
+" Plug 'vim-utils/vim-man'
+" Show indent wiht a line
 Plug 'Yggdroot/indentLine'
-" Session
+" Show icon relative to filetype
+Plug 'ryanoasis/vim-devicons'
+" Distraction free writing
+Plug 'junegunn/goyo.vim'
+" Color preview
+Plug 'chrisbra/Colorizer'
+" Extend " / @ to see content
+Plug 'junegunn/vim-peekaboo'
+" Mark quickfix and location list with sign
+Plug 'tomtom/quickfixsigns_vim'
+" colorize parentheses
+Plug 'luochen1990/rainbow'
+" Make the yanked region apparent
+Plug 'machakann/vim-highlightedyank'
+" Colorschemes
+" Solarized
+Plug 'altercation/vim-colors-solarized'
+" Gruvbox
+Plug 'morhetz/gruvbox'
+" Extend session
 Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
+" Restore cursor position and folding
 Plug 'vim-scripts/restore_view.vim'
 " search / finder
-Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-" qlist
-Plug 'romainl/vim-qlist'
-" code
+" Perl regex in vim
+Plug 'othree/eregex.vim'
+" Multi-language DBGP debugger
 Plug 'joonty/vdebug'
-" VCS
-Plug 'vcscommand.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'rhysd/committia.vim'
-" Twig plugin
-Plug 'evidens/vim-twig'
-" Lazy plugins {{{1
-Plug 'guyzmo/notmuch-abook', { 'for': ['mail'] }
-" testing 2016-04-24 wordy
-Plug 'reedes/vim-wordy', { 'for': ['mail', 'markdown', 'vimwiki'] }
-Plug 'honza/dockerfile.vim', { 'for': 'docker' }
-Plug 'leafo/moonscript-vim' , { 'for': 'moon' }
-Plug 'avakhov/vim-yaml', { 'for': ['python', 'yaml'] }
-Plug 'Matt-Deacalion/vim-systemd-syntax', { 'for': 'systemd' }
-Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
-Plug 'othree/html5.vim', { 'for': ['html', 'xhtml'] }
-Plug 'othree/yajs.vim', { 'for': 'javascript' }
-Plug 'vimperator/vimperator.vim', { 'for': 'vimperator' }
+" Mail completion with notmuch
+Plug 'adborden/vim-notmuch-address'
+" Syntax plugins {{{1
+Plug 'tmux-plugins/vim-tmux'
 call plug#end()
 filetype plugin indent on
 
@@ -136,9 +153,22 @@ command! -nargs=* Ag call fzf#run({
 \ })
 
 " indentLine {{{2
-let g:indentLine_color_term = 239
-let g:indentLine_color_gui  = '#09AA08'
+" Vim
+let g:indentLine_color_term = 248
+" GVim
+let g:indentLine_color_gui = '#fbf1c7'
+" none X terminal
+let g:indentLine_color_tty_light = 7 " (default: 4)
+let g:indentLine_color_dark = 1 " (default: 2)
+" Background (Vim, GVim)
+let g:indentLine_bgcolor_term = 229
+let g:indentLine_bgcolor_gui = '#fbf1c7'
 let g:indentLine_char       = '│'
+
+" highlightedyank {{{2
+let g:highlightedyank_highlight_duration = 1000
+hi HighlightedyankRegion cterm=reverse gui=reverse
+
 " Goyo {{{2
 let g:goyo_width = '100%'
 let g:goyo_height = '100%'
@@ -156,6 +186,7 @@ function! s:goyo_enter()
     " Show number relative from the cursor
     set norelativenumber
     " Disable quickfixsign
+    :IndentLinesDisable
     :QuickfixsignsDisable
     set scrolloff=999
   endif
@@ -173,6 +204,7 @@ function! s:goyo_leave()
     set number
     " Show number relative from the cursor
     set relativenumber
+    :IndentLinesEnable
     :QuickfixsignsEnable
     set scrolloff=5
   endif
@@ -183,6 +215,14 @@ autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 nnoremap <Leader>G :Goyo<CR>
 
+" Colorizer {{{2
+" auto loading
+let g:colorizer_auto_color = 1
+
+" Rainbow parentheses {{{2
+" Active by default
+let g:rainbow_active = 1
+
 " vim-session {{{2
 " Extended session management for Vim (:mksession on steroids)
 let g:session_autoload = 'yes'
@@ -192,6 +232,8 @@ let g:session_autosave = 'yes'
 let g:committia_hooks = {}
 function! g:committia_hooks.edit_open(info)
     " Additional settings
+    setlocal spell
+
     " If no commit message, start with insert mode
     if a:info.vcs ==# 'git' && getline(1) ==# ''
         startinsert
@@ -208,11 +250,6 @@ function! g:committia_hooks.diff_open(info)
     set nofoldenable
 endfunction
 
-" indentLine {{{2
-let g:indentLine_color_term = 239
-let g:indentLine_color_gui  = '#09AA08'
-let g:indentLine_char       = '│'
-
 " restore_view {{{2
 set viewoptions=cursor,folds,slash,unix
 
@@ -222,34 +259,56 @@ let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline_powerline_fonts = 1
 
-" NeoMake {{{2
-" let g:neomake_css_recess_maker = {
-"     \ 'args': ['--verbose'],
-"     \ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
-"     \ }
-" let g:neomake_css_enabled_makers = ['recess']
+" vim ale {{{2
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'python': ['autopep8'],
+\   'sh': ['shfmt'],
+\}
+" Use ALE's function for omnicompletion.
+set omnifunc=ale#completion#OmniFunc
 
-" let g:neomake_css_recess_maker = {
-"     \ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
-"     \ }
-" let g:neomake_css_enabled_makers = ['recess']
+let g:ale_completion_enabled = 1
 
-" deoplete {{{2
-" Use deoplete.
-	" Use deoplete.
-	let g:deoplete#enable_at_startup = 1
-	" Use smartcase.
-	let g:deoplete#enable_smart_case = 1
+" " Fix bash detection
+" function! ShellcheckDetect(buffer)
+"   for l:line_num in [1, 2, 3]
+"     let l:line = get(getbufline(a:buffer, l:line_num), 0, '')
+" 
+"     if l:line[:11] is# '# shellcheck'
+"       let l:command = l:line
+"       for l:possible_shell in ['bash', 'dash', 'ash', 'tcsh', 'csh', 'zsh', 'ksh', 'sh']
+"         if l:command =~# l:possible_shell . '\s*$'
+"           return l:possible_shell
+"         endif
+"       endfor
+"     endif
+"   endfor
+" 
+"   return ''
+" endfunction
+" 
+" function! ShellcheckSet(buffer)
+"   let l:shell = ShellcheckDetect(a:buffer)
+"   if l:shell == 'bash'
+"     call setbufvar(a:buffer, 'is_bash', 1)
+"   else
+"     call setbufvar(a:buffer, 'is_bash', 0)
+"   endif
+" endfunction
+" 
+" autocmd FileType sh call ShellcheckSet(bufnr("%"))
 
-	" <C-h>, <BS>: close popup and delete backword char.
-	inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
-	inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
+" eregex {{{2
+" Do not load by default
+" use :%S// for perl style regex
+let g:eregex_default_enable = 0
 
-	" <CR>: close popup and save indent.
-	inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-	function! s:my_cr_function() abort
-	  return deoplete#close_popup() . "\<CR>"
-  endfunction
+" vimwiki {{{2
+" let g:vimwiki_list = [{'path':'~/zettelkasten/','ext':'.md','syntax':'markdown'}, {"path":"~/vimwiki"}]
+let g:vimwiki_list = [{"path":"~/vimwiki"}, {'path':'~/zettelkasten/','ext':'.md','syntax':'markdown'}]
+
+" zettelkasten {{{2
 
 " Core configuration {{{1
 " grepprg {{{2
@@ -261,13 +320,14 @@ endif
 
 " Indent {{{2
 set shiftwidth=2
+" set smarttab
 set tabstop=2
 set softtabstop=2
 set expandtab
 set shiftround
 
 " Completion {{{2
-set omnifunc=syntaxcomplete#Complete
+" set omnifunc=syntaxcomplete#Complete
 
 " set complete=.,w,b,u,t
 set complete-=i
@@ -294,27 +354,37 @@ set showmatch
 " PASTE / NOPASTE {{{2
 set nopaste
 
-" BACKUP {{{2
+" Swap {{{2
 " !! I still use the same backup dir that I use for vim
 set swapfile
-let g:dotvim_backup=expand('$HOME') . '/.vim/backup'
+let g:dotvim_backup=expand('$HOME') . '/.vim/swap'
 if ! isdirectory(g:dotvim_backup)
     call mkdir(g:dotvim_backup, "p")
 endif
-set directory=~/.vim/backup
+" set &directory=g:dotvim_backup
+exec "set directory=".g:dotvim_backup
 
-" Backups with persistent undos {{{2
+" Backups {{{2
 set backup
 let g:dotvim_backups=expand('$HOME') . '/.vim/backups'
 if ! isdirectory(g:dotvim_backups)
     call mkdir(g:dotvim_backups, "p")
 endif
 exec "set backupdir=" . g:dotvim_backups
+" set &backupdir = g:dotvim_backups
+set writebackup
+
+" Undos {{{2
+set undofile
+let g:dotvim_undos=expand('$HOME') . '/.vim/undos'
+if ! isdirectory(g:dotvim_undos)
+    call mkdir(g:dotvim_undos, "p")
+endif
+exec "set undodir =". g:dotvim_undos
 if has('persistent_undo')
     set undofile
     set undolevels=1000
     set undoreload=10000
-    exec "set undodir=" . g:dotvim_backups
 endif
 
 " LINE WRAPPING {{{2
@@ -325,15 +395,6 @@ set textwidth=80
 
 " COMMAND HISTORY {{{2
 set history=10000
-
-" LinterConfiguration {{{2
-augroup linterConfiguration
-    autocmd FileType xml   setlocal  makeprg=xmllint\ -
-    autocmd FileType xml   setlocal  equalprg=xmllint\ --format\ -
-    autocmd FileType html  setlocal  equalprg=tidy\ -q\ -i\ -w\ 80\ -utf8\ --quote-nbsp\ no\ --output-xhtml\ yes\ --show-warnings\ no\ --show-body-only\ auto\ --tidy-mark\ no\ -
-    autocmd FileType xhtml setlocal  equalprg=tidy\ -q\ -i\ -w\ 80\ -utf8\ --quote-nbsp\ no\ --output-xhtml\ yes\ --show-warnings\ no\ --show-body-only\ auto\ --tidy-mark\ no\ -
-    autocmd FileType json  setlocal  equalprg=python\ -mjson.tool
-augroup END
 
 " Folding {{{2
 set foldmethod=indent
@@ -350,10 +411,6 @@ let g:gruvbox_undercurl = 1
 let g:gruvbox_termcolors = 256 " 16 or 256
 " colorscheme solarized
 colorscheme gruvbox
-" Change le colorscheme en mode diff
-if &diff
-    colorscheme solarized
-endif
 
 " VISUAL BELL {{{2
 " Error bells are displayed visually.
@@ -443,14 +500,17 @@ if has("autocmd")
 endif
 
 " Launch neomake on save {{{2
-if has("autocmd")
-  autocmd! BufWritePost * Neomake
-endif
+" if has("autocmd")
+"   autocmd! BufWritePost * Neomake
+" endif
 " Functions {{{1
 " AppendModeline() {{{2
 " Append modeline after last line in buffer.
 " Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
 " files.
+"
+" Custom Function {{{2
+" AppendModeline() {{{3
 function! AppendModeline()
   let l:modeline = printf(" vim: set ft=%s ts=%d sw=%d tw=%d foldmethod=%s %set :",
         \ &filetype, &tabstop, &shiftwidth, &textwidth, &foldmethod, &expandtab ? '' : 'no')
@@ -458,7 +518,7 @@ function! AppendModeline()
   call append(line("$"), l:modeline)
 endfunction
 
-" Pulse on focus
+" Pulse on focus {{{3
 " from https://github.com/airblade/dotvim/blob/dd5d7737e39aad5e24c1a4a8c0d115ff2ae7b488/vimrc#L294-L310
 function! s:Pulse()
   setlocal cursorline!
@@ -482,7 +542,7 @@ function! s:Pulse()
 endfunction
 autocmd FocusGained * call s:Pulse()
 
-" CLOSING {{{2
+" CLOSING {{{3
 " ZZ now saves all files, creates a session and exits
 function! AutocloseSession()
     wqall
@@ -543,11 +603,11 @@ map <C-A> <Plug>SpeedDatingUpgv
 
 map <C-X> <Plug>SpeedDatingDowngv
 
-" NeoMan {{{2
-" Overload K
-nnoremap <silent> K :Nman<CR>
-" Open vertical split man page with the word under the cursor.
-nnoremap <silent> <leader>mv :Vnman<CR>
+" " NeoMan {{{2
+" " Overload K
+" nnoremap <silent> K :Nman<CR>
+" " Open vertical split man page with the word under the cursor.
+" nnoremap <silent> <leader>mv :Vnman<CR>
 
 " nmap <silent> <BS> :nohlsearch<CR>
 
@@ -585,7 +645,7 @@ map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
 " Create file if it did not exist
 map <leader>gf :e <cfile><cr>
 
-" testing
+" testing {{{2
 noremap <Space> <C-d>zz
 noremap <NUL> <C-u>zz  "// Ctrl + Space --> Ctrl + u + z + z
 
