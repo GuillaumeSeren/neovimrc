@@ -6,6 +6,16 @@
 " @Link    : https://github.com/GuillaumeSeren/neovimrc
 " ---------------
 
+" Auto Install {{{1
+" plugins {{{2
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+" spell {{{2
+
 " Default plugins {{{1
 call plug#begin('~/.config/nvim/plugged')
 " DEFAULT preset
@@ -89,6 +99,12 @@ Plug 'othree/eregex.vim'
 Plug 'joonty/vdebug'
 " Mail completion with notmuch
 Plug 'adborden/vim-notmuch-address'
+
+" Install missing plugins {{{1
+" Run PlugInstall if there are missing plugins
+if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 " Syntax plugins {{{1
 Plug 'tmux-plugins/vim-tmux'
 call plug#end()
