@@ -99,6 +99,10 @@ Plug 'othree/eregex.vim'
 Plug 'joonty/vdebug'
 " Mail completion with notmuch
 Plug 'adborden/vim-notmuch-address'
+" yaml
+Plug 'mrk21/yaml-vim'
+" jinja2
+Plug 'Glench/Vim-Jinja2-Syntax'
 
 " Install missing plugins {{{1
 " Run PlugInstall if there are missing plugins
@@ -186,7 +190,7 @@ let g:highlightedyank_highlight_duration = 1000
 hi HighlightedyankRegion cterm=reverse gui=reverse
 
 " Goyo {{{2
-let g:goyo_width = '100%'
+let g:goyo_width  = '100%'
 let g:goyo_height = '100%'
 let g:goyo_linenr = '100'
 function! s:goyo_enter()
@@ -290,7 +294,7 @@ let g:ale_completion_enabled = 1
 " function! ShellcheckDetect(buffer)
 "   for l:line_num in [1, 2, 3]
 "     let l:line = get(getbufline(a:buffer, l:line_num), 0, '')
-" 
+"
 "     if l:line[:11] is# '# shellcheck'
 "       let l:command = l:line
 "       for l:possible_shell in ['bash', 'dash', 'ash', 'tcsh', 'csh', 'zsh', 'ksh', 'sh']
@@ -300,10 +304,10 @@ let g:ale_completion_enabled = 1
 "       endfor
 "     endif
 "   endfor
-" 
+"
 "   return ''
 " endfunction
-" 
+"
 " function! ShellcheckSet(buffer)
 "   let l:shell = ShellcheckDetect(a:buffer)
 "   if l:shell == 'bash'
@@ -312,7 +316,7 @@ let g:ale_completion_enabled = 1
 "     call setbufvar(a:buffer, 'is_bash', 0)
 "   endif
 " endfunction
-" 
+"
 " autocmd FileType sh call ShellcheckSet(bufnr("%"))
 
 " eregex {{{2
@@ -321,10 +325,18 @@ let g:ale_completion_enabled = 1
 let g:eregex_default_enable = 0
 
 " vimwiki {{{2
-" let g:vimwiki_list = [{'path':'~/zettelkasten/','ext':'.md','syntax':'markdown'}, {"path":"~/vimwiki"}]
-let g:vimwiki_list = [{"path":"~/vimwiki"}, {'path':'~/zettelkasten/','ext':'.md','syntax':'markdown'}]
+let g:vimwiki_list = [{"path":"~/vimwiki",      'syntax': 'markdown', 'ext': '.md'},
+                    \ {"path":"~/zettelkasten", 'syntax': 'markdown', 'ext': '.md'}]
+" let g:vimwiki_use_mouse = 1
+" let g:vimwiki_folding = 'expr'
+" let g:vimwiki_auto_chdir = 1
 
-" zettelkasten {{{2
+" zettel
+let g:zettel_options = [{"front_matter" : {"tags" : ":new:"}, "template" : "~/vimwiki/template/zettelkasten.tpl"},
+                      \ {"front_matter" : {"tags" : ""},      "template" : "~/vimwiki/template/zettelkasten.tpl"}]
+let g:zettel_format = "%d%m%y%H%M%S-%file_no"
+let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading --color=always "
+" let g:initialize_wiki_number
 
 " Core configuration {{{1
 " grepprg {{{2
